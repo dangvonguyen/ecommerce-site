@@ -4,7 +4,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from '@/components/ui';
 import { db } from '@/db';
 import { orders, products, users } from '@/db/schema';
 import { formatCurrency, formatNumber } from '@/lib/formatter';
