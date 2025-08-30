@@ -4,7 +4,8 @@ import { db } from '@/db';
 import { products } from '@/db/schema';
 import { z } from 'zod';
 import fs from 'fs/promises';
-import { redirect } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
+import { eq } from 'drizzle-orm';
 
 const addSchema = z.object({
   name: z.string().min(2),
@@ -56,4 +57,40 @@ export async function addProduct(prevState: unknown, formData: FormData) {
   });
 
   redirect('/admin/products');
+}
+
+export async function toggleProductAvailability(
+  id: string,
+  isAvailableForPurchase: boolean
+) {
+  await db
+    .update(products)
+    .set({ isAvailableForPurchase: isAvailableForPurchase })
+    .where(eq(products.id, id));
+}
+
+export async function deleteProduct(id: string) {
+  const deleted = await db
+    .delete(products)
+    .where(eq(products.id, id))
+    .returning({
+      filePath: products.filePath,
+      imagePath: products.imagePath,
+    });
+
+  if (deleted.length === 0) return notFound();
+
+  const { filePath, imagePath } = deleted[0];
+
+  try {
+    await fs.unlink(filePath);
+  } catch (err) {
+    console.error(`Error deleting file at "${filePath}":`, err);
+  }
+
+  try {
+    await fs.unlink(`public${imagePath}`);
+  } catch (err) {
+    console.error(`Error deleting image at "public${imagePath}":`, err);
+  }
 }

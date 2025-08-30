@@ -1,3 +1,6 @@
+/products
+/public/products
+
 # dependencies
 /node_modules
 /.pnp
