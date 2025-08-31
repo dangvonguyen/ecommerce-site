@@ -6,6 +6,7 @@ import { z } from 'zod';
 import fs from 'fs/promises';
 import { notFound, redirect } from 'next/navigation';
 import { eq } from 'drizzle-orm';
+import { revalidatePath } from 'next/cache';
 
 const addSchema = z.object({
   name: z.string().min(2),
@@ -55,6 +56,9 @@ export async function addProduct(prevState: unknown, formData: FormData) {
     filePath,
     imagePath,
   });
+
+  revalidatePath("/")
+  revalidatePath("/products")
 
   redirect('/admin/products');
 }
@@ -116,6 +120,9 @@ export async function updateProduct(
     .set({ name, description, priceInCents, filePath, imagePath })
     .where(eq(products.id, id));
 
+  revalidatePath("/")
+  revalidatePath("/products")
+
   redirect('/admin/products');
 }
 
@@ -127,6 +134,9 @@ export async function toggleProductAvailability(
     .update(products)
     .set({ isAvailableForPurchase: isAvailableForPurchase })
     .where(eq(products.id, id));
+
+  revalidatePath("/")
+  revalidatePath("/products")
 }
 
 export async function deleteProduct(id: string) {
@@ -153,4 +163,7 @@ export async function deleteProduct(id: string) {
   } catch (err) {
     console.error(`Error deleting image at "public${imagePath}":`, err);
   }
+
+  revalidatePath("/")
+  revalidatePath("/products")
 }

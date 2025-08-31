@@ -2,26 +2,31 @@ import { ProductCard, ProductCardSkeleton } from '@/components/ProductCard';
 import { Button } from '@/components/ui';
 import { db } from '@/db';
 import { orders, products } from '@/db/schema';
+import { cache } from '@/lib/cache';
 import { count, desc, eq, getTableColumns, sql } from 'drizzle-orm';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { Suspense } from 'react';
 
-function getNewestProducts() {
-  return db
-    .select({
-      ...getTableColumns(products),
-      ordersCount: count(orders.id),
-    })
-    .from(products)
-    .where(eq(products.isAvailableForPurchase, true))
-    .leftJoin(orders, eq(orders.productId, products.id))
-    .groupBy(products.id)
-    .orderBy(products.createdAt)
-    .limit(7);
-}
+const getNewestProducts = cache(
+  () => {
+    return db
+      .select({
+        ...getTableColumns(products),
+        ordersCount: count(orders.id),
+      })
+      .from(products)
+      .where(eq(products.isAvailableForPurchase, true))
+      .leftJoin(orders, eq(orders.productId, products.id))
+      .groupBy(products.id)
+      .orderBy(products.createdAt)
+      .limit(7);
+  },
+  ['/', 'getMostPopularProducts'],
+  { revalidate: 60 * 60 * 24 }
+);
 
-function getMostPopularProducts() {
+const getMostPopularProducts = cache(() => {
   return db
     .select({
       ...getTableColumns(products),
@@ -33,7 +38,7 @@ function getMostPopularProducts() {
     .groupBy(products.id)
     .orderBy(desc(sql`"orders_count"`))
     .limit(7);
-}
+}, ['/', 'getMostPopularProducts']);
 
 export default function HomePage() {
   return (
