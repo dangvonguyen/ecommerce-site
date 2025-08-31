@@ -11,7 +11,7 @@ import {
 } from '@/components/ui';
 import { db } from '@/db';
 import { orders, products } from '@/db/schema';
-import { eq, sql } from 'drizzle-orm';
+import { count, eq } from 'drizzle-orm';
 import { CheckCircle2, MoreVertical, XCircle } from 'lucide-react';
 import { formatCurrency, formatNumber } from '@/lib/formatter';
 import {
@@ -47,7 +47,7 @@ async function ProductsTable() {
       name: products.name,
       priceInCents: products.priceInCents,
       isAvailableForPurchase: products.isAvailableForPurchase,
-      ordersCount: sql<number>`count(${orders.id})`.as('orders_count'),
+      ordersCount: count(orders.id),
     })
     .from(products)
     .leftJoin(orders, eq(orders.productId, products.id))

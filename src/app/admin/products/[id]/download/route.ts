@@ -9,9 +9,9 @@ export async function GET(
   req: NextRequest,
   { params: { id } }: { params: { id: string } }
 ) {
-  const product = (
-    await db.select().from(products).where(eq(products.id, id)).limit(1)
-  )[0];
+  const product = await db.query.products.findFirst({
+    where: eq(products.id, id),
+  });
 
   if (product == null) return notFound();
 

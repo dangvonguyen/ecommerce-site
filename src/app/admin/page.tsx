@@ -11,18 +11,17 @@ import { formatCurrency, formatNumber } from '@/lib/formatter';
 import { count, eq, sum } from 'drizzle-orm';
 
 async function getSalesData() {
-  const result = await db
-    .select({
-      total: sum(orders.pricePaidInCents).mapWith(Number),
-      salesCount: count(),
-    })
-    .from(orders);
-
-  const row = result[0];
+  const result = await db.query.orders.findFirst({
+    columns: {},
+    extras: {
+      total: sum(orders.pricePaidInCents).mapWith(Number).as('total'),
+      salesCount: count().as('sales_count'),
+    }
+  })
 
   return {
-    amount: (row.total || 0) / 100,
-    numberOfSales: row.salesCount || 0,
+    amount: (result?.total || 0) / 100,
+    numberOfSales: result?.salesCount || 0,
   };
 }
 

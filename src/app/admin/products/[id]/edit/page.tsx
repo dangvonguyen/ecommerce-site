@@ -9,9 +9,9 @@ export default async function EditProductPage({
 }: {
   params: { id: string };
 }) {
-  const product = (
-    await db.select().from(products).where(eq(products.id, id))
-  )[0];
+  const product = await db.query.products.findFirst({
+    where: eq(products.id, id),
+  })
 
   return (
     <>

@@ -88,9 +88,9 @@ export async function updateProduct(
   }
 
   const { name, description, priceInCents, file, image } = result.data;
-  const product = (
-    await db.select().from(products).where(eq(products.id, id))
-  )[0];
+  const product = await db.query.products.findFirst({
+    where: eq(products.id, id),
+  })
 
   if (product == null) return notFound();
 
