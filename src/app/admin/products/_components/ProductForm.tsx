@@ -2,7 +2,7 @@
 
 import { Button, Input, Label, Textarea } from '@/components/ui';
 import { formatCurrency } from '@/lib/formatter';
-import { useActionState } from 'react';
+import { useActionState, useState } from 'react';
 import { addProduct, updateProduct } from '../../_actions/product';
 import { useFormStatus } from 'react-dom';
 import { products } from '@/db/schema';
@@ -26,6 +26,7 @@ export function ProductForm({
       errors: {},
     }
   );
+  const [priceInCents, setPriceInCents] = useState(product?.priceInCents || undefined);
 
   return (
     <form action={formAction} className="space-y-8">
@@ -49,11 +50,12 @@ export function ProductForm({
           id="priceInCents"
           name="priceInCents"
           required
-          defaultValue={state.data.priceInCents}
+          value={priceInCents}
+          onChange={(e) => setPriceInCents(Number(e.target.value) || undefined)}
         />
         <div className="text-muted-foreground">
           {' '}
-          {formatCurrency(state.data.priceInCents / 100)}{' '}
+          {formatCurrency((priceInCents || 0) / 100)}{' '}
         </div>
         {state.errors.priceInCents && (
           <div className="text-destructive">{state.errors.priceInCents}</div>
