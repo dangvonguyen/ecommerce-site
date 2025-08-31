@@ -3,20 +3,29 @@
 import { Button, Input, Label, Textarea } from '@/components/ui';
 import { formatCurrency } from '@/lib/formatter';
 import { useActionState } from 'react';
-import { addProduct } from '../../_actions/product';
+import { addProduct, updateProduct } from '../../_actions/product';
 import { useFormStatus } from 'react-dom';
+import { products } from '@/db/schema';
+import Image from 'next/image';
 
-export function ProductForm() {
-  const [state, formAction] = useActionState(addProduct, {
-    data: {
-      name: '',
-      priceInCents: 0,
-      description: '',
-      file: null,
-      image: null,
-    },
-    errors: {},
-  });
+export function ProductForm({
+  product,
+}: {
+  product?: typeof products.$inferSelect;
+}) {
+  const [state, formAction] = useActionState(
+    product == null ? addProduct : updateProduct.bind(null, product.id),
+    {
+      data: {
+        name: product?.name || '',
+        priceInCents: product?.priceInCents || 0,
+        description: product?.description || '',
+        file: null,
+        image: null,
+      },
+      errors: {},
+    }
+  );
 
   return (
     <form action={formAction} className="space-y-8">
@@ -64,14 +73,27 @@ export function ProductForm() {
       </div>
       <div className="space-y-2">
         <Label htmlFor="file">File</Label>
-        <Input type="file" id="file" name="file" required />
+        <Input type="file" id="file" name="file" required={product == null} />
+        {product != null && (
+          <div className="text-muted-foreground">{product.filePath}</div>
+        )}
         {state.errors.file && (
           <div className="text-destructive">{state.errors.file}</div>
         )}
       </div>
       <div className="space-y-2">
         <Label htmlFor="image">Image</Label>
-        <Input type="file" id="image" name="image" required />
+        <Input type="file" id="image" name="image" required={product == null} />
+        {product != null && (
+          <div className="flex justify-around">
+            <Image
+              src={product.imagePath}
+              height="400"
+              width="400"
+              alt="Product Image"
+            />
+          </div>
+        )}
         {state.errors.image && (
           <div className="text-destructive">{state.errors.image}</div>
         )}
