@@ -92,7 +92,9 @@ export function ProductForm({
               src={product.imagePath}
               height="400"
               width="400"
+              style={{ width: 'auto', height: 'auto' }}
               alt="Product Image"
+              priority
             />
           </div>
         )}

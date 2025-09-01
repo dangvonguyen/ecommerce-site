@@ -5,10 +5,11 @@ import { products } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 
 export default async function EditProductPage({
-  params: { id },
+  params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
+  const { id } = await params;
   const product = await db.query.products.findFirst({
     where: eq(products.id, id),
   })
