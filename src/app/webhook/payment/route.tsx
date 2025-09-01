@@ -1,9 +1,10 @@
 import { db } from '@/db';
-import { orders, users } from '@/db/schema';
+import { downloadVerifications, orders, products, users } from '@/db/schema';
 import { Resend } from 'resend';
 import { NextRequest, NextResponse } from 'next/server';
 import { eq } from 'drizzle-orm';
 import Stripe from 'stripe';
+import PurchaseReceiptEmail from '@/email/PurchaseReceipt';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 const resend = new Resend(process.env.RESEND_API_KEY as string);
@@ -49,7 +50,10 @@ async function createOrder(charge: Stripe.Charge) {
   const email = charge.billing_details.email;
   const pricePaidInCents = charge.amount;
 
-  if (!productId || !email) {
+  const product = await db.query.products.findFirst({
+    where: eq(products.id, productId),
+  });
+  if (!product || !email) {
     console.error('Missing customer email or product ID');
     return;
   }
@@ -68,7 +72,7 @@ async function createOrder(charge: Stripe.Charge) {
   }
 
   // Create order
-  await db
+  const [order] = await db
     .insert(orders)
     .values({
       userId: user.id,
@@ -77,12 +81,26 @@ async function createOrder(charge: Stripe.Charge) {
     })
     .returning();
 
+  const [downloadVerification] = await db
+    .insert(downloadVerifications)
+    .values({
+      productId,
+      expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24),
+    })
+    .returning();
+
   try {
     await resend.emails.send({
       from: `Support <${process.env.SENDER_EMAIL}>`,
       to: email,
       subject: 'Order Confirmation',
-      react: <h1>Order Confirmation - Thank you for your purchase!</h1>,
+      react: (
+        <PurchaseReceiptEmail
+          order={order}
+          product={product}
+          downloadVerificationId={downloadVerification.id}
+        />
+      ),
     });
   } catch (error) {
     console.error('Resent error:', error);
