@@ -1,8 +1,10 @@
-import { db } from '@/db';
-import { downloadVerifications } from '@/db/schema';
+import fs from 'fs/promises';
+
 import { and, eq, gt } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
-import fs from 'fs/promises';
+
+import { db, downloadVerifications } from '@/db';
+
 
 export async function GET(
   req: NextRequest,

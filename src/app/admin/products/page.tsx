@@ -1,7 +1,14 @@
-import { PageHeader } from '../_components/PageHeader';
+import { count, eq } from 'drizzle-orm';
+import { CheckCircle2, MoreVertical, XCircle } from 'lucide-react';
 import Link from 'next/link';
+
 import {
   Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
   Table,
   TableBody,
   TableCell,
@@ -9,18 +16,11 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui';
-import { db } from '@/db';
-import { orders, products } from '@/db/schema';
-import { count, eq } from 'drizzle-orm';
-import { CheckCircle2, MoreVertical, XCircle } from 'lucide-react';
+import { db, orders, products } from '@/db';
 import { formatCurrency, formatNumber } from '@/lib/formatter';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/DropdownMenu';
+
+import { PageHeader } from '../_components/PageHeader';
+
 import {
   ActiveToggleDropdownItem,
   DeleteDropdownItem,

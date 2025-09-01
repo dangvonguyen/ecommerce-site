@@ -1,5 +1,10 @@
-import { PageHeader } from '../_components/PageHeader';
+import { desc } from 'drizzle-orm';
+import { MoreVertical } from 'lucide-react';
+
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
   Table,
   TableBody,
   TableCell,
@@ -7,16 +12,11 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui';
-import { db } from '@/db';
-import { users } from '@/db/schema';
-import { desc } from 'drizzle-orm';
-import { MoreVertical } from 'lucide-react';
+import { db, users } from '@/db';
 import { formatCurrency, formatNumber } from '@/lib/formatter';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from '@/components/ui/DropdownMenu';
+
+import { PageHeader } from '../_components/PageHeader';
+
 import { DeleteDropDownItem } from './_components/UserActions';
 
 export default function AdminCustomersPage() {

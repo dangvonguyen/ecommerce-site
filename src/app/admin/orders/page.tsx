@@ -1,23 +1,23 @@
+import { desc } from 'drizzle-orm';
+import { MoreVertical } from 'lucide-react';
+
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/Table';
-import { PageHeader } from '../_components/PageHeader';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from '@/components/ui/DropdownMenu';
-import { MoreVertical } from 'lucide-react';
-import { DeleteDropDownItem } from './_components/OrderActions';
-import { db } from '@/db';
-import { desc } from 'drizzle-orm';
-import { orders } from '@/db/schema';
+} from '@/components/ui';
+import { db, orders } from '@/db';
 import { formatCurrency } from '@/lib/formatter';
+
+import { PageHeader } from '../_components/PageHeader';
+
+import { DeleteDropDownItem } from './_components/OrderActions';
 
 export default function AdminOrdersPage() {
   return (

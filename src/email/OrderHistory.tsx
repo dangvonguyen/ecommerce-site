@@ -1,3 +1,5 @@
+import React from 'react';
+
 import {
   Body,
   Container,
@@ -7,9 +9,9 @@ import {
   Html,
   Preview,
   Tailwind,
-} from "@react-email/components"
-import { OrderInformation } from "./components/OrderInformation"
-import React from "react"
+} from '@react-email/components';
+
+import { OrderInformation } from './components/OrderInformation';
 
 type OrderHistoryEmailProps = {
   orders: {
@@ -33,10 +35,10 @@ OrderHistoryEmail.PreviewProps = {
       pricePaidInCents: 10000,
       downloadVerificationId: crypto.randomUUID(),
       product: {
-        name: "Product name",
-        description: "Some description",
+        name: 'Product name',
+        description: 'Some description',
         imagePath:
-          "/products/path-to-your-image-1.jpg",
+          '/products/path-to-your-image-1.jpg',
       },
     },
     {
@@ -45,16 +47,16 @@ OrderHistoryEmail.PreviewProps = {
       pricePaidInCents: 2000,
       downloadVerificationId: crypto.randomUUID(),
       product: {
-        name: "Product name 2",
-        description: "Some other desc",
+        name: 'Product name 2',
+        description: 'Some other desc',
         imagePath:
-          "/products/path-to-your-path-2.jpg",
+          '/products/path-to-your-path-2.jpg',
       },
     },
   ],
-} satisfies OrderHistoryEmailProps
+} satisfies OrderHistoryEmailProps;
 
-export default function OrderHistoryEmail({ orders }: OrderHistoryEmailProps) {
+export function OrderHistoryEmail({ orders }: OrderHistoryEmailProps) {
   return (
     <Html>
       <Preview>Order History & Downloads</Preview>
@@ -77,5 +79,5 @@ export default function OrderHistoryEmail({ orders }: OrderHistoryEmailProps) {
         </Body>
       </Tailwind>
     </Html>
-  )
+  );
 }

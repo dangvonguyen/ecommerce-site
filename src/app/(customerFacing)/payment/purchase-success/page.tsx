@@ -1,12 +1,12 @@
-import { Button } from '@/components/ui';
-import { db } from '@/db';
-import { downloadVerifications, products } from '@/db/schema';
-import { formatCurrency } from '@/lib/formatter';
 import { eq } from 'drizzle-orm';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Stripe from 'stripe';
+
+import { Button } from '@/components/ui';
+import { db, downloadVerifications, products } from '@/db';
+import { formatCurrency } from '@/lib/formatter';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
@@ -80,7 +80,7 @@ async function createDownloadVerification(productId: string) {
     where: eq(downloadVerifications.productId, productId),
   });
 
-  if (downloadVerification == null) return notFound()
+  if (downloadVerification == null) return notFound();
 
-  return downloadVerification.id
+  return downloadVerification.id;
 }

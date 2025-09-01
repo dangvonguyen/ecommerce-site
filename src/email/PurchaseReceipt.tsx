@@ -6,8 +6,9 @@ import {
   Html,
   Preview,
   Tailwind,
-} from "@react-email/components"
-import { OrderInformation } from "./components/OrderInformation"
+} from '@react-email/components';
+
+import { OrderInformation } from './components/OrderInformation';
 
 type PurchaseReceiptEmailProps = {
   product: {
@@ -21,10 +22,10 @@ type PurchaseReceiptEmailProps = {
 
 PurchaseReceiptEmail.PreviewProps = {
   product: {
-    name: "Product name",
-    description: "Some description",
+    name: 'Product name',
+    description: 'Some description',
     imagePath:
-      "/products/path-to-your-image.jpg",
+      '/products/path-to-your-image.jpg',
   },
   order: {
     id: crypto.randomUUID(),
@@ -32,7 +33,7 @@ PurchaseReceiptEmail.PreviewProps = {
     pricePaidInCents: 10000,
   },
   downloadVerificationId: crypto.randomUUID(),
-} satisfies PurchaseReceiptEmailProps
+} satisfies PurchaseReceiptEmailProps;
 
 export default function PurchaseReceiptEmail({
   product,
@@ -56,5 +57,5 @@ export default function PurchaseReceiptEmail({
         </Body>
       </Tailwind>
     </Html>
-  )
+  );
 }

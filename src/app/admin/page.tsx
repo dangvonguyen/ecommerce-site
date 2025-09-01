@@ -1,3 +1,5 @@
+import { count, eq, sum } from 'drizzle-orm';
+
 import {
   Card,
   CardContent,
@@ -5,10 +7,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui';
-import { db } from '@/db';
-import { orders, products, users } from '@/db/schema';
+import { db, orders, products, users } from '@/db';
 import { formatCurrency, formatNumber } from '@/lib/formatter';
-import { count, eq, sum } from 'drizzle-orm';
 
 async function getSalesData() {
   const result = await db.query.orders.findFirst({
@@ -17,7 +17,7 @@ async function getSalesData() {
       total: sum(orders.pricePaidInCents).mapWith(Number).as('total'),
       salesCount: count().as('sales_count'),
     }
-  })
+  });
 
   return {
     amount: (result?.total || 0) / 100,

@@ -1,5 +1,17 @@
 'use client';
 
+import { FormEvent, useState } from 'react';
+
+import {
+  Elements,
+  LinkAuthenticationElement,
+  PaymentElement,
+  useElements,
+  useStripe,
+} from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+import Image from 'next/image';
+
 import { userOrderExists } from '@/app/_actions/orders';
 import {
   Button,
@@ -11,16 +23,6 @@ import {
   CardTitle,
 } from '@/components/ui';
 import { formatCurrency } from '@/lib/formatter';
-import {
-  PaymentElement,
-  Elements,
-  useElements,
-  useStripe,
-  LinkAuthenticationElement,
-} from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
-import Image from 'next/image';
-import { FormEvent, useState } from 'react';
 
 type CheckoutFormProps = {
   product: {

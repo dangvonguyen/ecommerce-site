@@ -1,12 +1,14 @@
-import { ProductCard, ProductCardSkeleton } from '@/components/ProductCard';
-import { Button } from '@/components/ui';
-import { db } from '@/db';
-import { orders, products } from '@/db/schema';
-import { cache } from '@/lib/cache';
+import { Suspense } from 'react';
+
 import { count, desc, eq, getTableColumns, sql } from 'drizzle-orm';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
-import { Suspense } from 'react';
+
+import { ProductCard, ProductCardSkeleton } from '@/components/ProductCard';
+import { Button } from '@/components/ui';
+import { db, orders, products } from '@/db';
+import { cache } from '@/lib/cache';
+
 
 const getNewestProducts = cache(
   () => {

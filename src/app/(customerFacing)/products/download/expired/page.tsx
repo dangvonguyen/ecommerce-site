@@ -1,5 +1,6 @@
-import { Button } from "@/components/ui"
-import Link from "next/link"
+import Link from 'next/link';
+
+import { Button } from '@/components/ui';
 
 export default function Expired() {
   return (
@@ -9,5 +10,5 @@ export default function Expired() {
         <Link href="/orders">Get New Link</Link>
       </Button>
     </>
-  )
+  );
 }

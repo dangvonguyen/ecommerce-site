@@ -1,9 +1,10 @@
-import { ProductCard, ProductCardSkeleton } from '@/components/ProductCard';
-import { db } from '@/db';
-import { products } from '@/db/schema';
-import { cache } from '@/lib/cache';
-import { asc, eq } from 'drizzle-orm';
 import { Suspense } from 'react';
+
+import { asc, eq } from 'drizzle-orm';
+
+import { ProductCard, ProductCardSkeleton } from '@/components/ProductCard';
+import { db, products } from '@/db';
+import { cache } from '@/lib/cache';
 
 export default function ProductsPage() {
   return (

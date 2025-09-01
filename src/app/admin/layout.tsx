@@ -1,5 +1,6 @@
-import { Nav, NavLink } from '@/components/Nav';
 import React from 'react';
+
+import { Nav, NavLink } from '@/components/Nav';
 
 export const dynamic = 'force-dynamic';
 

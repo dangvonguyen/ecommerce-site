@@ -1,12 +1,13 @@
 'use server';
 
-import { db } from '@/db';
-import { products } from '@/db/schema';
-import { z } from 'zod';
 import fs from 'fs/promises';
-import { notFound, redirect } from 'next/navigation';
+
 import { eq } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
+import { notFound, redirect } from 'next/navigation';
+import { z } from 'zod';
+
+import { db, products } from '@/db';
 
 const addSchema = z.object({
   name: z.string().min(2),
@@ -57,8 +58,8 @@ export async function addProduct(prevState: unknown, formData: FormData) {
     imagePath,
   });
 
-  revalidatePath("/")
-  revalidatePath("/products")
+  revalidatePath('/');
+  revalidatePath('/products');
 
   redirect('/admin/products');
 }
@@ -94,7 +95,7 @@ export async function updateProduct(
   const { name, description, priceInCents, file, image } = result.data;
   const product = await db.query.products.findFirst({
     where: eq(products.id, id),
-  })
+  });
 
   if (product == null) return notFound();
 
@@ -120,8 +121,8 @@ export async function updateProduct(
     .set({ name, description, priceInCents, filePath, imagePath })
     .where(eq(products.id, id));
 
-  revalidatePath("/")
-  revalidatePath("/products")
+  revalidatePath('/');
+  revalidatePath('/products');
 
   redirect('/admin/products');
 }
@@ -135,8 +136,8 @@ export async function toggleProductAvailability(
     .set({ isAvailableForPurchase: isAvailableForPurchase })
     .where(eq(products.id, id));
 
-  revalidatePath("/")
-  revalidatePath("/products")
+  revalidatePath('/');
+  revalidatePath('/products');
 }
 
 export async function deleteProduct(id: string) {
@@ -164,6 +165,6 @@ export async function deleteProduct(id: string) {
     console.error(`Error deleting image at "public${imagePath}":`, err);
   }
 
-  revalidatePath("/")
-  revalidatePath("/products")
+  revalidatePath('/');
+  revalidatePath('/products');
 }

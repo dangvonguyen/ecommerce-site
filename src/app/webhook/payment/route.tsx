@@ -1,9 +1,9 @@
-import { db } from '@/db';
-import { downloadVerifications, orders, products, users } from '@/db/schema';
-import { Resend } from 'resend';
-import { NextRequest, NextResponse } from 'next/server';
 import { eq } from 'drizzle-orm';
+import { NextRequest, NextResponse } from 'next/server';
+import { Resend } from 'resend';
 import Stripe from 'stripe';
+
+import { db, downloadVerifications, orders, products, users } from '@/db';
 import PurchaseReceiptEmail from '@/email/PurchaseReceipt';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);

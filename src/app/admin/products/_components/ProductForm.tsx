@@ -1,12 +1,18 @@
 'use client';
 
-import { Button, Input, Label, Textarea } from '@/components/ui';
-import { formatCurrency } from '@/lib/formatter';
 import { useActionState, useState } from 'react';
-import { addProduct, updateProduct } from '../../_actions/product';
-import { useFormStatus } from 'react-dom';
-import { products } from '@/db/schema';
+
 import Image from 'next/image';
+import { useFormStatus } from 'react-dom';
+
+import { Button, Input, Label, Textarea } from '@/components/ui';
+import { products } from '@/db/schema';
+import { formatCurrency } from '@/lib/formatter';
+
+import { addProduct, updateProduct } from '../../_actions/product';
+
+
+
 
 export function ProductForm({
   product,

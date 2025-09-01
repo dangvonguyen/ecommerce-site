@@ -1,9 +1,9 @@
 'use server';
 
-import { db } from '@/db';
-import { orders } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import { notFound } from 'next/navigation';
+
+import { db, orders } from '@/db';
 
 export async function deleteOrder(id: string) {
   const order = (

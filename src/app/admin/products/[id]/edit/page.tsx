@@ -1,8 +1,9 @@
-import { db } from '@/db';
+import { eq } from 'drizzle-orm';
+
+import { db, products } from '@/db';
+
 import { PageHeader } from '../../../_components/PageHeader';
 import { ProductForm } from '../../_components/ProductForm';
-import { products } from '@/db/schema';
-import { eq } from 'drizzle-orm';
 
 export default async function EditProductPage({
   params,
@@ -12,7 +13,7 @@ export default async function EditProductPage({
   const { id } = await params;
   const product = await db.query.products.findFirst({
     where: eq(products.id, id),
-  })
+  });
 
   return (
     <>

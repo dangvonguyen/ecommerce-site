@@ -1,8 +1,9 @@
-import { db } from '@/db';
-import { products } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import { notFound } from 'next/navigation';
 import Stripe from 'stripe';
+
+import { db, products } from '@/db';
+
 import { CheckoutForm } from './_components/CheckoutForm';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);

@@ -1,4 +1,8 @@
+import Image from 'next/image';
+import Link from 'next/link';
+
 import { formatCurrency } from '@/lib/formatter';
+
 import {
   Button,
   Card,
@@ -8,8 +12,6 @@ import {
   CardHeader,
   CardTitle,
 } from './ui';
-import Link from 'next/link';
-import Image from 'next/image';
 
 type ProductCardProps = {
   id: string;
