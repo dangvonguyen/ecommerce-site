@@ -2,7 +2,7 @@
 
 import { useFormState, useFormStatus } from 'react-dom';
 
-import { emailOrderHistory } from '@/actions/orders';
+import { emailOrderHistory } from '@/app/_actions/orders';
 import {
   Button,
   Card,

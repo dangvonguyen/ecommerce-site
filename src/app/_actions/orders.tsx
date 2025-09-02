@@ -1,10 +1,10 @@
 'use server';
 
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { Resend } from 'resend';
 import { z } from 'zod';
 
-import { db, downloadVerifications, users } from '@/db';
+import { db, downloadVerifications, orders, users } from '@/db';
 import { OrderHistoryEmail } from '@/email/OrderHistory';
 
 const emailSchema = z.email();
@@ -79,4 +79,19 @@ export async function emailOrderHistory(
     message:
       'Check your email to view your order history and download your products.',
   };
+}
+
+export async function userOrderExists(email: string, productId: string) {
+  const user = await db.query.users.findFirst({
+    where: eq(users.email, email),
+  });
+
+  if (user == null) return false;
+
+  const order = await db.query.orders.findFirst({
+    columns: { id: true },
+    where: and(eq(orders.productId, productId), eq(orders.userId, user.id)),
+  });
+
+  return order != null;
 }
